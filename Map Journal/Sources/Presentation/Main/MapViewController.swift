@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class MapViewController: UIViewController {
   
@@ -14,6 +15,7 @@ class MapViewController: UIViewController {
   private var addJournalButton = UIButton()
   private var currentLocationButton = UIButton()
   private var buttonContainer = UIStackView()
+  private let locationManager = CLLocationManager()
   
   override func loadView() {
     view = mapView
@@ -23,7 +25,8 @@ class MapViewController: UIViewController {
     super.viewDidLoad()
     setupAttribute()
     setupLayout()
-
+    initailizeLocationManager()
+    initailizeMapView()
   }
   
   private func setupLayout() {
@@ -40,7 +43,6 @@ class MapViewController: UIViewController {
     ])
 
   }
-  
   private func setupAttribute() {
     buttonContainer.distribution = .fillEqually
     buttonContainer.spacing = 10
@@ -62,13 +64,49 @@ class MapViewController: UIViewController {
   
   @objc
   private func didTapCurrentLocationButton() {
-    print("didTapCurrentLocationButton")
+    if let location = locationManager.location {
+      setRegion(MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500))
+    }
   }
   
   @objc
   private func didTapAddJournalButton() {
-    print("didTapAddJournalButton")
-
   }
   
+  private func setRegion(_ region: MKCoordinateRegion) {
+    mapView.setRegion(region, animated: true)
+  }
+  
+  
+}
+
+extension MapViewController: MKMapViewDelegate {
+  private func initailizeMapView() {
+    mapView.showsUserLocation = true
+    mapView.userTrackingMode = .follow
+    if let location = locationManager.location {
+      setRegion(MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500) )
+    }
+  }
+}
+
+extension MapViewController: CLLocationManagerDelegate {
+  private func initailizeLocationManager() {
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    
+    switch locationManager.authorizationStatus {
+    case .authorizedAlways, .authorizedWhenInUse:
+      print("인증 성공")
+      locationManager.startUpdatingLocation()
+      
+    case .notDetermined:
+      locationManager.requestAlwaysAuthorization()
+      
+    case .denied, .restricted:
+      print("위치 서비스 권한 필요")
+    }
+    
+  }
+
 }
