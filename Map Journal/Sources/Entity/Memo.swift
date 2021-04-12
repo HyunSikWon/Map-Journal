@@ -13,13 +13,16 @@ struct Memo: Codable {
   var feelingEmogi: String
   var simpleMemo: String
   var dateString: String
+  var date: Date
   
   init(_ title: String, _ weatherEmoji: String, feelingEmoji: String, simpleMemo: String) {
     self.title = title
     self.weatherEmogi = weatherEmoji
     self.feelingEmogi = feelingEmoji
     self.simpleMemo = simpleMemo
-    self.dateString = Memo.dateFormatter.string(from: Date())
+    self.date = Date()
+    self.dateString = Memo.dateFormatter.string(
+      from: date)
   }
   
 }
