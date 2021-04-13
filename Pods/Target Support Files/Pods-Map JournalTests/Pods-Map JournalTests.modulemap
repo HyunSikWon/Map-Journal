@@ -1,0 +1,6 @@
+framework module Pods_Map_JournalTests {
+  umbrella header "Pods-Map JournalTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
