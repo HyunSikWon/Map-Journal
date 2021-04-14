@@ -11,30 +11,40 @@ import MapKit
 import SnapKit
 import Then
 
+/* TODO: UI
+ 1. 키보드 화면 가리는 문제.
+ */
 
 class AddLocationViewController: UIViewController {
   
-  let currentLocation = CLLocationCoordinate2D(latitude: 37.5167, longitude: 126.86246782116663)
-  let mapView: MKMapView = MKMapView()
-  let locationPin = UIImageView()
-  let currentLocationButton = UIButton()
-  let addButton = UIButton()
-  let memoContainer = UIView()
-  let memoTitle = UITextField()
-  let memoTextView = UITextView()
-  let feeling = UISegmentedControl(items: ["😍","😀","😙","☹️","😭","🤬"])
-  let weather = UISegmentedControl(items: ["☀️","🌤","☁️","☔️","❄️"])
+  private let currentLocation: CLLocationCoordinate2D
+  private let mapView: MKMapView = MKMapView()
+  private let currentLocationButton = UIButton()
+  private let addButton = UIButton()
+  private let memoContainer = UIView()
+  private let memoTitle = UITextField()
+  private let memoTextView = UITextView()
+  fileprivate let feeling = UISegmentedControl(items: ["🥳","😊","😗","☹️","😭","🤬"])
+  fileprivate let weather = UISegmentedControl(items: ["☀️","🌤","☁️","☔️","❄️"])
+  
+  init(_ currentLocation: CLLocationCoordinate2D ) {
+    self.currentLocation = currentLocation
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupLayout()
     setupAttribute()
     initailizeMapView()
-    
   }
   
   private func setupLayout() {
     view.addSubview(mapView)
-    mapView.addSubview(locationPin)
     mapView.addSubview(currentLocationButton)
     memoContainer.addSubview(memoTitle)
     memoContainer.addSubview(memoTextView)
@@ -45,24 +55,16 @@ class AddLocationViewController: UIViewController {
     
     mapView.snp.makeConstraints { make in
       make.width.equalTo(view.snp.width)
-      make.height.equalTo(mapView.snp.width).multipliedBy(0.8)
+      make.height.equalTo(mapView.snp.width).multipliedBy(0.5)
       make.centerX.equalTo(view)
       make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-    }
-    
-    locationPin.snp.makeConstraints { make in
-      make.centerX.equalTo(mapView)
-      make.centerY.equalTo(mapView)
-      make.width.equalTo(30)
-      make.height.equalTo(30)
     }
     
     currentLocationButton.snp.makeConstraints { make in
       make.width.equalTo(mapView).multipliedBy(0.1)
       make.height.equalTo(currentLocationButton.snp.width)
-      make.right.equalTo(mapView.snp.right).offset(-16)
-      make.bottom.equalTo(mapView.snp.bottom).offset(-16)
-      
+      make.right.equalTo(mapView.snp.right).offset(-18)
+      make.bottom.equalTo(mapView.snp.bottom).offset(-20)
     }
     
     memoContainer.snp.makeConstraints { make in
@@ -95,19 +97,18 @@ class AddLocationViewController: UIViewController {
     }
     
     memoTextView.snp.makeConstraints { make in
-      make.top.equalTo(weather.snp.bottom).offset(16)
+      make.top.equalTo(weather.snp.bottom).offset(10)
       make.left.equalTo(memoContainer.snp.left).offset(15)
       make.right.equalTo(memoContainer.snp.right).offset(-15)
-      make.bottom.equalTo(addButton.snp.top).offset(-16)
+      make.height.equalTo(memoContainer).multipliedBy(0.3)
     }
     
     addButton.snp.makeConstraints { make in
-      make.width.equalTo(view)
-      make.height.equalTo(view.snp.height).multipliedBy(0.1)
-      make.bottom.equalTo(memoContainer.snp.bottom)
-      make.centerX.equalTo(view)
+      make.top.equalTo(memoTextView.snp.bottom).offset(10)
+      make.left.equalTo(memoContainer.snp.left).offset(15)
+      make.right.equalTo(memoContainer.snp.right).offset(-15)
+      make.height.equalTo(50)
     }
-    
     
   }
   
@@ -115,13 +116,10 @@ class AddLocationViewController: UIViewController {
     view.do {
       $0.backgroundColor = .white
     }
+    
     mapView.do {
       $0.showsUserLocation = true
       mapView.userTrackingMode = .follow
-    }
-    
-    locationPin.do {
-      $0.image = UIImage(systemName: "mappin")
     }
     
     currentLocationButton.do {
@@ -152,12 +150,12 @@ class AddLocationViewController: UIViewController {
     
     memoTextView.do {
       $0.autocorrectionType = .no
-      
       $0.layer.cornerRadius = 10
       $0.layer.borderWidth = 1
       $0.layer.borderColor = UIColor.lightGray.cgColor
       $0.font = UIFont.systemFont(ofSize: 16)
       $0.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+      $0.delegate = self
     }
     
     addButton.do {
@@ -165,13 +163,14 @@ class AddLocationViewController: UIViewController {
       $0.setTitle("기록 추가", for: .normal)
       $0.setTitleColor(.white, for: .normal)
       $0.addTarget(self, action: #selector(addButtonDidTap), for: .touchUpInside)
+      $0.layer.cornerRadius = 10
     }
   }
   
   @objc
   private func addButtonDidTap() {
     // Presenter.add
-    print(mapView.centerCoordinate)
+    print(currentLocation)
   }
   
   @objc
@@ -180,7 +179,7 @@ class AddLocationViewController: UIViewController {
   }
   
   private func initailizeMapView() {
-    let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 800)
+    let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 500)
     mapView.setCameraZoomRange(zoomRange, animated: true)
     setRegion(currentLocation)
   }
@@ -191,4 +190,10 @@ class AddLocationViewController: UIViewController {
   }
 }
 
-
+extension AddLocationViewController: UITextViewDelegate {
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    guard let str = textView.text else { return true }
+    let newLength = str.count + text.count - range.length
+    return newLength <= 100
+  }
+}

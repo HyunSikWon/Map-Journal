@@ -9,9 +9,6 @@ import Foundation
 import CoreLocation
 
 class Location: Codable {
-  let description: String
-//  let date: Date
-//  let dateString: String
   let latitude: Double
   let longtitude: Double
   var memos: [Memo] = []
@@ -20,10 +17,9 @@ class Location: Codable {
     return CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
   }
   
-  init(_ location: CLLocation, description: String) {
+  init(location: CLLocation) {
     latitude = location.coordinate.latitude
     longtitude = location.coordinate.longitude
-    self.description = description
   }
 }
 
