@@ -3,13 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		4968D69E6B121541CA9ABADF /* Pods_Map_Journal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA504C92CB2308A6587DDA57 /* Pods_Map_Journal.framework */; };
 		71E42D07B21A173742489E63 /* Pods_Map_JournalTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F3CCA0DCC97B38702770A0F /* Pods_Map_JournalTests.framework */; };
 		7E3D56C02623FAE100219CE6 /* LocationStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3D56BF2623FAE100219CE6 /* LocationStorage.swift */; };
+		7E57ADA12625CB6B0084FC4C /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E57ADA02625CB6B0084FC4C /* AddLocationViewController.swift */; };
 		7E68EB3D26202A2E0013F0ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E68EB3C26202A2E0013F0ED /* AppDelegate.swift */; };
 		7E68EB4626202A2F0013F0ED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E68EB4526202A2F0013F0ED /* Assets.xcassets */; };
 		7E68EB4926202A2F0013F0ED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E68EB4726202A2F0013F0ED /* LaunchScreen.storyboard */; };
@@ -45,6 +46,7 @@
 		61CF5C7E9204E10210A734F2 /* Pods_Map_Journal_Map_JournalUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Map_Journal_Map_JournalUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D7EA5863F96FFF512444177 /* Pods-Map Journal-Map JournalUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Map Journal-Map JournalUITests.debug.xcconfig"; path = "Target Support Files/Pods-Map Journal-Map JournalUITests/Pods-Map Journal-Map JournalUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7E3D56BF2623FAE100219CE6 /* LocationStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStorage.swift; sourceTree = "<group>"; };
+		7E57ADA02625CB6B0084FC4C /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		7E68EB3926202A2E0013F0ED /* Map Journal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Map Journal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E68EB3C26202A2E0013F0ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7E68EB4526202A2F0013F0ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -175,7 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				7E68EB8526202B9A0013F0ED /* Main */,
-				7E68EB8626202BBD0013F0ED /* AddJournal */,
+				7E68EB8626202BBD0013F0ED /* AddMemo */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -197,11 +199,12 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		7E68EB8626202BBD0013F0ED /* AddJournal */ = {
+		7E68EB8626202BBD0013F0ED /* AddMemo */ = {
 			isa = PBXGroup;
 			children = (
+				7E57ADA02625CB6B0084FC4C /* AddLocationViewController.swift */,
 			);
-			path = AddJournal;
+			path = AddMemo;
 			sourceTree = "<group>";
 		};
 		A7ADE88F9A66E43A93675F10 /* Frameworks */ = {
@@ -224,7 +227,6 @@
 				432E734981251B848C53CD3C /* Pods-Map JournalTests.debug.xcconfig */,
 				4AEAC860B8374FC4B8FAFE85 /* Pods-Map JournalTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -466,6 +468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E3D56C02623FAE100219CE6 /* LocationStorage.swift in Sources */,
+				7E57ADA12625CB6B0084FC4C /* AddLocationViewController.swift in Sources */,
 				7ECCEB1226215B7A0084DB2F /* Memo.swift in Sources */,
 				7E68EB3D26202A2E0013F0ED /* AppDelegate.swift in Sources */,
 				7ECCEB1726215BC60084DB2F /* Location.swift in Sources */,
