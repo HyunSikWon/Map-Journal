@@ -136,7 +136,6 @@
 			children = (
 				7E68EB4A26202A2F0013F0ED /* Info.plist */,
 				7E68EB7926202A710013F0ED /* Sources */,
-				7E3D56BE2623FAAC00219CE6 /* Persistance */,
 				7E68EB7226202A390013F0ED /* Resources */,
 			);
 			path = "Map Journal";
@@ -174,6 +173,7 @@
 			children = (
 				7E68EB3C26202A2E0013F0ED /* AppDelegate.swift */,
 				7E68EB8026202B260013F0ED /* Presentation */,
+				7E3D56BE2623FAAC00219CE6 /* Persistance */,
 				7E68EB8126202B4A0013F0ED /* Entity */,
 			);
 			path = Sources;
