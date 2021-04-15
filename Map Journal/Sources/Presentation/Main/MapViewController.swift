@@ -11,33 +11,29 @@ import MapKit
 import SnapKit
 import Then
 
-protocol MapView {
-  func showAnnotations(_ annotaion: [MKAnnotation])
-  func showMemoView(_ vc: UIViewController)
-}
 
 protocol MapViewPresenter {
   func fetchData()
   func annotationDidTap(_ annotation: MKAnnotation)
+  func addButtonDidTap(_ currentLocation: CLLocationCoordinate2D)
 }
 
 class MapViewController: UIViewController, MapView {
   
   static let latLongMeters: CLLocationDistance = 500
- 
-  var dummyData = [
-    Location(location: CLLocation(latitude: 37.51732369344599, longitude: 126.86403343414311)),
-    Location(location: CLLocation(latitude: 37.5167, longitude: 126.862468))
-  ]
   
+  // MARK: - View
   private var mapView = MKMapView()
   private var addJournalButton = UIButton()
   private var currentLocationButton = UIButton()
   private var buttonContainer = UIStackView()
   private let locationManager = CLLocationManager()
   
+  // MARK: - Presenter
   var presenter: MapViewPresenter!
 
+  
+  // MARK: - Life Cycel
   override func loadView() {
     view = mapView
   }
@@ -48,11 +44,9 @@ class MapViewController: UIViewController, MapView {
     setupLayout()
     initailizeLocationManager()
     initailizeMapView()
-//     presenter.fetchData()
-    // 임시
-    setAnnotaion()
+    presenter.fetchData()
   }
-  
+ 
   private func setupLayout() {
     buttonContainer.addArrangedSubview(addJournalButton)
     buttonContainer.addArrangedSubview(currentLocationButton)
@@ -104,42 +98,22 @@ class MapViewController: UIViewController, MapView {
     guard let location = locationManager.location else { return }
     let currentLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                  longitude: location.coordinate.longitude)
-    
-    let navVC = UINavigationController(rootViewController: AddLocationViewController(currentLocation))
-    self.present(navVC, animated: true, completion: nil)
+    presenter.addButtonDidTap(currentLocation)
   }
-  
-  private func setRegion(_ region: MKCoordinateRegion) {
-    mapView.setRegion(region, animated: true)
-  }
-  
-  // 임시
-  private func setAnnotaion() {
-    let annos = dummyData.map {annotationForLocation($0)}
-    showAnnotations(annos)
-  }
-  
+
   // MARK: - Presenter -> View
   func showAnnotations(_ annotations: [MKAnnotation] ) {
-    // Presenter -> view.fetchData(annotations)
     mapView.addAnnotations(annotations)
   }
   
-  func showMemoView(_ memoViewController: UIViewController) {
-    let vc = UIViewController()
-    vc.view.backgroundColor = .white
-    vc.modalPresentationStyle = .popover
+  func showView(_ vc: UIViewController) {
     self.present(vc, animated: true, completion: nil)
-//    self.present(memoViewController, animated: true, completion: nil)
-  }
-  
-  // Presenter에 옮길 것
-  private func annotationForLocation(_ location: Location) -> MKAnnotation {
-    let annotation = MKPointAnnotation()
-    annotation.coordinate = location.coordinate
-    return annotation
   }
 
+  // MARK: - Private
+  private func setRegion(_ region: MKCoordinateRegion) {
+    mapView.setRegion(region, animated: true)
+  }
 }
 
 extension MapViewController: MKMapViewDelegate {
@@ -161,8 +135,7 @@ extension MapViewController: MKMapViewDelegate {
                                          latitudinalMeters: MapViewController.latLongMeters,
                                          longitudinalMeters: MapViewController.latLongMeters), animated: true)
 
-//    presenter.annotationDidTap(annotation)
-    showMemoView(UIViewController())
+    presenter.annotationDidTap(annotation)
   }
 
 }
