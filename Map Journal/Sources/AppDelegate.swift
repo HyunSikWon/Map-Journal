@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     self.window = UIWindow()
     let mapViewController = MapViewController()
     mapViewController.presenter = DefaultMapViewPresenter(mapViewController)
-    window?.rootViewController = mapViewController
+    window?.rootViewController = MemoListViewController()
     window?.makeKeyAndVisible()
     return true
   }
