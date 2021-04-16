@@ -20,6 +20,8 @@
 		7E9F7B542628030F00051D03 /* MapViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F7B532628030F00051D03 /* MapViewPresenter.swift */; };
 		7E9F7B6026280B1500051D03 /* MemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F7B5F26280B1500051D03 /* MemoListViewController.swift */; };
 		7E9F7B6826280CB100051D03 /* MemoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9F7B6726280CB100051D03 /* MemoListCell.swift */; };
+		7ECC4B652629BF2E007C08DD /* MemoListViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC4B642629BF2E007C08DD /* MemoListViewPresenter.swift */; };
+		7ECC4B6D2629C978007C08DD /* AddLocationViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECC4B6C2629C978007C08DD /* AddLocationViewPresenter.swift */; };
 		7ECCEB1226215B7A0084DB2F /* Memo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCEB1126215B7A0084DB2F /* Memo.swift */; };
 		7ECCEB1726215BC60084DB2F /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECCEB1626215BC60084DB2F /* Location.swift */; };
 		9C15DF6C24ADF1BA0BC9165F /* Pods_Map_Journal_Map_JournalUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61CF5C7E9204E10210A734F2 /* Pods_Map_Journal_Map_JournalUITests.framework */; };
@@ -65,6 +67,8 @@
 		7E9F7B532628030F00051D03 /* MapViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewPresenter.swift; sourceTree = "<group>"; };
 		7E9F7B5F26280B1500051D03 /* MemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewController.swift; sourceTree = "<group>"; };
 		7E9F7B6726280CB100051D03 /* MemoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListCell.swift; sourceTree = "<group>"; };
+		7ECC4B642629BF2E007C08DD /* MemoListViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewPresenter.swift; sourceTree = "<group>"; };
+		7ECC4B6C2629C978007C08DD /* AddLocationViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewPresenter.swift; sourceTree = "<group>"; };
 		7ECCEB1126215B7A0084DB2F /* Memo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memo.swift; sourceTree = "<group>"; };
 		7ECCEB1626215BC60084DB2F /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		7F3CCA0DCC97B38702770A0F /* Pods_Map_JournalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Map_JournalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				7E57ADA02625CB6B0084FC4C /* AddLocationViewController.swift */,
+				7ECC4B6C2629C978007C08DD /* AddLocationViewPresenter.swift */,
 			);
 			path = AddMemo;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 		7E9F7B5B26280B0100051D03 /* MemoList */ = {
 			isa = PBXGroup;
 			children = (
+				7ECC4B642629BF2E007C08DD /* MemoListViewPresenter.swift */,
 				7E9F7B5F26280B1500051D03 /* MemoListViewController.swift */,
 				7E9F7B6C2628121900051D03 /* Cell */,
 			);
@@ -492,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ECC4B6D2629C978007C08DD /* AddLocationViewPresenter.swift in Sources */,
 				7E9F7B6026280B1500051D03 /* MemoListViewController.swift in Sources */,
 				7E9F7B6826280CB100051D03 /* MemoListCell.swift in Sources */,
 				7E3D56C02623FAE100219CE6 /* LocationStorage.swift in Sources */,
@@ -501,6 +508,7 @@
 				7E68EB3D26202A2E0013F0ED /* AppDelegate.swift in Sources */,
 				7ECCEB1726215BC60084DB2F /* Location.swift in Sources */,
 				7E68EB8B26202C2E0013F0ED /* MapViewController.swift in Sources */,
+				7ECC4B652629BF2E007C08DD /* MemoListViewPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

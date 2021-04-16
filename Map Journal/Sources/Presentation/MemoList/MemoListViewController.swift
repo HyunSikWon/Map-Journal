@@ -11,25 +11,23 @@ import Then
 
 protocol MemoListViewPresenter {
   func fetchData()
+  func willDeleteCell(_ indexPath: IndexPath)
+  
 }
 
-protocol MemoListView {
-  func reload()
+// Entity와 별개로 두었을 때 장점은?
+struct MemoViewItems {
+  let title: String
+  let date: String
+  let feeling: String
+  let weather: String
+  let memo: String
 }
 
-class MemoListViewController: UIViewController {
-  
-  var dummy = [
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날")
-  ]
-  
+class MemoListViewController: UIViewController, MemoListView {
+ 
+
+  fileprivate var items: [MemoViewItems] = []
   // presenter
   var presenter: MemoListViewPresenter!
   
@@ -38,10 +36,9 @@ class MemoListViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     setupLayout()
     setupAttribute()
-//    presenter.fetchData()
+    presenter.fetchData()
   }
   
   private func setupLayout() {
@@ -69,15 +66,17 @@ class MemoListViewController: UIViewController {
   
   
   // Presenter -> View
-  func reload() {
+  func setMemoListViewItems(_ items: [MemoViewItems]) {
+    self.items = items
     tableView.reloadData()
   }
   
+
 }
 
 extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return dummy.count
+    return items.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,7 +84,7 @@ extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
       return UITableViewCell()
     }
     
-    cell.update(dummy[indexPath.row])
+    cell.update(items[indexPath.row])
     
     return cell
   }

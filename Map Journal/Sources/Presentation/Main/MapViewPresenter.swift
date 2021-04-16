@@ -39,6 +39,8 @@ class DefaultMapViewPresenter: MapViewPresenter {
 
   }
   
+  
+  // View -> Presenter
   func fetchData() {
     // TODO: Repository.fetch - 비지니스 로직
     let annotations = dummyData.map{ annotationForLocation($0)}
@@ -48,12 +50,16 @@ class DefaultMapViewPresenter: MapViewPresenter {
   func annotationDidTap(_ annotation: MKAnnotation) {
     // TODO:  해당 어노테이션(위치)의 메모를 보여준다. - 비지니스 로직
 //    let coordinate = annotation.coordinate
-    let memoViewController = UIViewController()
-    memoViewController.view.backgroundColor = .white
-    view?.showView(memoViewController)
+    
+    // TODO: 의존성
+    let memoListViewController = MemoListViewController()
+    memoListViewController.presenter = DefaultMemoListViewPresenter(memoListViewController)
+    view?.showView(memoListViewController)
   }
   
   func addButtonDidTap(_ currentLocation: CLLocationCoordinate2D) {
+    
+    // TODO: 의존성
     let addMemoViewController = UINavigationController(rootViewController: AddLocationViewController(currentLocation))
     view?.showView(addMemoViewController)
   }

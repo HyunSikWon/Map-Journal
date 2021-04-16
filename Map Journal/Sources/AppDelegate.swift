@@ -14,9 +14,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     self.window = UIWindow()
+    
+    // TODO: 의존성
     let mapViewController = MapViewController()
     mapViewController.presenter = DefaultMapViewPresenter(mapViewController)
-    window?.rootViewController = MemoListViewController()
+    
+    window?.rootViewController = mapViewController
+    
+    
     window?.makeKeyAndVisible()
     return true
   }

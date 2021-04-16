@@ -99,12 +99,12 @@ class MemoListCell: UITableViewCell {
   
   }
   
-  func update(_ items: Memo) {
+  func update(_ items: MemoViewItems) {
     self.title.text = items.title
-    self.dateLabel.text = items.dateString
-    self.feeling.text = items.feelingEmogi
-    self.weather.text = items.weatherEmogi
-    self.memo.text = items.simpleMemo
+    self.dateLabel.text = items.date
+    self.feeling.text = items.feeling
+    self.weather.text = items.weather
+    self.memo.text = items.memo
   }
   
 }

@@ -15,7 +15,13 @@ import Then
  1. 키보드 화면 가리는 문제.
  */
 
-class AddLocationViewController: UIViewController {
+protocol AddLocationViewPresenter {
+  func addButtonDidTap(_ location: CLLocationCoordinate2D, _ memo: MemoViewItems)
+}
+
+class AddLocationViewController: UIViewController, AddMemoView {
+  
+  var presenter: AddLocationViewController!
   
   private let currentLocation: CLLocationCoordinate2D
   private let mapView: MKMapView = MKMapView()
@@ -167,10 +173,22 @@ class AddLocationViewController: UIViewController {
     }
   }
   
+  
   @objc
   private func addButtonDidTap() {
     // Presenter.add
+    // data
+    presenter.addButtonDidTap()
     print(currentLocation)
+  }
+  
+  // MARK: - Presenter - > View
+  func showAlert(withErrorMessage message: String) {
+    // TODO: Show Error
+  }
+  
+  func dismiss() {
+    self.dismiss()
   }
   
   @objc
