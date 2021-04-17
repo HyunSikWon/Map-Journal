@@ -6,32 +6,32 @@
 //
 
 import UIKit
+import CoreLocation
 import SnapKit
 import Then
 
 protocol MemoListViewPresenter {
-  func fetchData()
+  func fetchData(_ coordinate: CLLocationCoordinate2D)
   func willDeleteCell(_ indexPath: IndexPath)
   
 }
 
-
 class MemoListViewController: UIViewController, MemoListView {
  
-
   fileprivate var viewData: [MemoViewData] = []
  
-  // presenter
+  // MARK: - Presenter
   var presenter: MemoListViewPresenter!
   
   // MARK: - View
   let tableView = UITableView()
-  
+  var coordinate: CLLocationCoordinate2D? = nil
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     setupLayout()
     setupAttribute()
-    presenter.fetchData()
+    presenter.fetchData(coordinate!)
   }
   
   private func setupLayout() {
@@ -42,6 +42,12 @@ class MemoListViewController: UIViewController, MemoListView {
   }
   
   private func setupAttribute() {
+    title = "메모"
+    navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .close,
+                                                                           target: self,
+                                                                           action: #selector(closeButtonDidTap)), animated: false)
+    
+
     view.do {
       $0.backgroundColor = .white
     }
@@ -65,6 +71,10 @@ class MemoListViewController: UIViewController, MemoListView {
   }
   
 
+  @objc
+  private func closeButtonDidTap() {
+    self.dismiss(animated: true, completion: nil)
+  }
 }
 
 extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {

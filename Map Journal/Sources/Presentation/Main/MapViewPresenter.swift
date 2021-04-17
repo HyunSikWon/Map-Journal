@@ -16,52 +16,54 @@ protocol MapView {
 
 class DefaultMapViewPresenter: MapViewPresenter {
   
-  var dummyData = [
-    Location(location: CLLocation(latitude: 37.51732369344599, longitude: 126.86403343414311)),
-    Location(location: CLLocation(latitude: 37.5167, longitude: 126.862468))
-  ]
-  // repository
-  // var locationRepo:
+  // MARK: - repository
+  var repo: MemoRepository!
   
-  // view
-  var view: MapView?
+  //  MARK: - view
+  var view: MapView!
   
-  init(_ view: MapView) {
+  init(_ view: MapView, _ repo: MemoRepository) {
     self.view = view
-    dummyData[0].memos.append(Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-    dummyData[0].memos.append(Memo("스타벅스2", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-    dummyData[0].memos.append(Memo("스타벅스3", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-
-
-    dummyData[1].memos.append(Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-    dummyData[1].memos.append(Memo("스타벅스2", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-    dummyData[1].memos.append(Memo("스타벅스3", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"))
-
+    self.repo = repo
   }
-  
   
   // View -> Presenter
   func fetchData() {
-    // TODO: Repository.fetch - 비지니스 로직
-    let annotations = dummyData.map{ annotationForLocation($0)}
-    view?.showAnnotations(annotations)
+    repo.fetch({ [weak self] result in
+      guard let self = self else {return}
+      
+      switch result {
+      case .success(_):
+        print("fetch success")
+        self.setMapView()
+        
+        
+      case .failure(let error):
+        print("fetchError \(error.localizedDescription)")
+      }
+    })
   }
   
   func annotationDidTap(_ annotation: MKAnnotation) {
-    // TODO:  fetch data from memo repo 해당 어노테이션(위치)의 메모를 보여준다. - 비지니스 로직
-//    let coordinate = annotation.coordinate
-    
+    let coordinate = annotation.coordinate
     // TODO: 의존성
     let memoListViewController = MemoListViewController()
-    memoListViewController.presenter = DefaultMemoListViewPresenter(memoListViewController)
-    view?.showView(memoListViewController)
+    memoListViewController.coordinate = coordinate
+    memoListViewController.presenter = DefaultMemoListViewPresenter(memoListViewController, DependencyContainer.shared.memoRepository)
+    view.showView(memoListViewController)
   }
   
   func addButtonDidTap(_ currentLocation: CLLocationCoordinate2D) {
-    
     // TODO: 의존성
-    let addMemoViewController = UINavigationController(rootViewController: AddMemoViewController(currentLocation))
-    view?.showView(addMemoViewController)
+    let addMemoViewController = AddMemoViewController(currentLocation)
+    addMemoViewController.presenter = DefaultAddMemoViewPresenter(addMemoViewController, DependencyContainer.shared.memoRepository)
+    view.showView(addMemoViewController)
+    
+  }
+  
+  private func setMapView() {
+    let annotations = repo.locations.map { annotationForLocation($0) }
+    view.showAnnotations(annotations)
   }
   
   private func annotationForLocation(_ location: Location) -> MKAnnotation {
@@ -69,5 +71,5 @@ class DefaultMapViewPresenter: MapViewPresenter {
     annotation.coordinate = location.coordinate
     return annotation
   }
-
+  
 }

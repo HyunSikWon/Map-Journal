@@ -22,8 +22,9 @@ protocol AddMemoViewPresenter {
 class AddMemoViewController: UIViewController, AddMemoView {
   
   var presenter: AddMemoViewPresenter!
-  
   private let currentLocation: CLLocationCoordinate2D
+  
+  // MARK: - View
   private let mapView: MKMapView = MKMapView()
   private let currentLocationButton = UIButton()
   private let addButton = UIButton()
@@ -61,7 +62,7 @@ class AddMemoViewController: UIViewController, AddMemoView {
     
     mapView.snp.makeConstraints { make in
       make.width.equalTo(view.snp.width)
-      make.height.equalTo(mapView.snp.width).multipliedBy(0.5)
+      make.height.equalTo(mapView.snp.width).multipliedBy(0.7)
       make.centerX.equalTo(view)
       make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
     }
@@ -119,6 +120,12 @@ class AddMemoViewController: UIViewController, AddMemoView {
   }
   
   private func setupAttribute() {
+    title = "메모 추가"
+    
+    navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                                           target: self,
+                                                                           action: #selector(cancelButtonDidTap)), animated: false)
+    
     view.do {
       $0.backgroundColor = .white
     }
@@ -176,10 +183,22 @@ class AddMemoViewController: UIViewController, AddMemoView {
   
   @objc
   private func addButtonDidTap() {
-    // Presenter.add
-    // data
-    presenter.addButtonDidTap(currentLocation, MemoViewData(title: "", date: "", feeling: "", weather: "", memo: ""))
+    // TODO: View data 처리
+    let memoViewData = MemoViewData(title: memoTitle.text ?? "",
+                                    date: "",
+                                    feeling: feeling.titleForSegment(at: 0) ?? "",
+                                    weather: weather.titleForSegment(at: 0) ?? "" ,
+                                    memo: "간단한 메모")
+    
+    
+    presenter.addButtonDidTap(currentLocation, memoViewData)
   }
+  
+  @objc
+  private func cancelButtonDidTap() {
+    self.dismiss()
+  }
+  
   
   // MARK: - Presenter - > View
   func showAlert(withErrorMessage message: String) {

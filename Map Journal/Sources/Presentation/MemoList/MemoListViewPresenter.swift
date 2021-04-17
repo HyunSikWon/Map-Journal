@@ -6,40 +6,51 @@
 //
 
 import Foundation
-
+import CoreLocation
 protocol MemoListView {
   func setMemoListViewItems(_ viewData: [MemoViewData])
 }
 
 class DefaultMemoListViewPresenter: MemoListViewPresenter {
   
-  // var memoRepo
+  var repo: MemoRepository?
   var view: MemoListView?
   
-  init(_ view: MemoListView) {
+  init(_ view: MemoListView, _ repo: MemoRepository) {
     self.view = view
+    self.repo = repo
   }
   
   // MARK: view -> presenter
-  func fetchData() {
-    // TODO: Fetch data from repo
-    view?.setMemoListViewItems(dummy.map{MemoViewData(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
+  func fetchData(_ coordinate: CLLocationCoordinate2D) {
+    repo?.fetch({ [weak self] result in
+      guard let self = self else {return}
+      switch result {
+      case .success():
+        self.setMemoListView(coordinate)
+      case .failure(let error):
+        print("fetchError \(error.localizedDescription)")
+      }
+    })
+
   }
   
   func willDeleteCell(_ indexPath: IndexPath) {
     // TODO: Delelte & Save data
-    view?.setMemoListViewItems(dummy.map{MemoViewData(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
   }
   
-  var dummy = [
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날"),
-    Memo("스타벅스1", "☂️", feelingEmoji: "☹️", simpleMemo: "기분이 별로인 날")
-  ]
+  private func setMemoListView(_ coordinate: CLLocationCoordinate2D) {
+    var memoViewDatas: [MemoViewData] = []
+    repo?.locations.forEach({ location in
+      if location.longtitude == coordinate.longitude && location.latitude == coordinate.latitude {
+        
+        location.memos.forEach { (memo) in
+          memoViewDatas.append(MemoViewData(title: memo.title, date: memo.dateString, feeling: memo.feelingEmogi, weather: memo.weatherEmogi, memo: memo.simpleMemo))
+        }
+        
+      }
+    })
+    self.view?.setMemoListViewItems(memoViewDatas)
+  }
   
 }
