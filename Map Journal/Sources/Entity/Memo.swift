@@ -15,7 +15,7 @@ struct Memo: Codable {
   var dateString: String
   var date: Date
   
-  init(_ title: String, _ weatherEmoji: String, feelingEmoji: String, simpleMemo: String) {
+  init(_ title: String, _ weatherEmoji: String, _ feelingEmoji: String, _ simpleMemo: String) {
     self.title = title
     self.weatherEmogi = weatherEmoji
     self.feelingEmogi = feelingEmoji
