@@ -31,7 +31,6 @@ class MapViewController: UIViewController, MapView {
   
   // MARK: - Presenter
   var presenter: MapViewPresenter!
-
   
   // MARK: - Life Cycel
   override func loadView() {
@@ -44,6 +43,9 @@ class MapViewController: UIViewController, MapView {
     setupLayout()
     initailizeLocationManager()
     initailizeMapView()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
     presenter.fetchData()
   }
  
@@ -107,7 +109,10 @@ class MapViewController: UIViewController, MapView {
   }
   
   func showView(_ vc: UIViewController) {
-    self.present(vc, animated: true, completion: nil)
+    // TODO: Navigtation Controller에 Full로 채우기
+    let navigationController = UINavigationController(rootViewController: vc)
+    navigationController.modalPresentationStyle = .fullScreen
+    self.present(navigationController, animated: true, completion: nil)
   }
 
   // MARK: - Private
@@ -135,6 +140,7 @@ extension MapViewController: MKMapViewDelegate {
                                          longitudinalMeters: MapViewController.locationDistance), animated: true)
     // view -> presenter
     presenter.annotationDidTap(annotation)
+    mapView.deselectAnnotation(annotation, animated: true)
   }
 
 }

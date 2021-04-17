@@ -17,11 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // TODO: 의존성
     let mapViewController = MapViewController()
-    mapViewController.presenter = DefaultMapViewPresenter(mapViewController)
+    
+    mapViewController.presenter = DefaultMapViewPresenter(mapViewController,
+                                                          DependencyContainer.shared.memoRepository)
     
     window?.rootViewController = mapViewController
-    
-    
     window?.makeKeyAndVisible()
     return true
   }

@@ -13,24 +13,33 @@ protocol AddMemoView {
   func dismiss()
 }
 
-class DefaultAddMemoiewPresenter: AddMemoViewPresenter {
-
-  // var repo: MemoRepo
-  var view: AddMemoView?
+class DefaultAddMemoViewPresenter: AddMemoViewPresenter {
+  var repo: MemoRepository!
+  var view: AddMemoView!
   
-  init(_ view: AddMemoView) {
+  init(_ view: AddMemoView, _ repo: MemoRepository) {
     self.view = view
+    self.repo = repo
   }
   
   func addButtonDidTap(_ location: CLLocationCoordinate2D,
                        _ viewData: MemoViewData) {
-    // TODO: Save Logic
+    let newMemo = Memo(viewData.title, viewData.weather, viewData.feeling, viewData.memo)
     
-    // if error
-    view?.showAlert(withErrorMessage: "오류 종류")
-    // succes
-    view?.dismiss()
+    repo.add(location , newMemo, { [weak self] result in
+      guard let self = self else { return }
+      
+      switch result {
+      case .success():
+        self.view?.dismiss()
+      case .failure(let error):
+        self.view?.showAlert(withErrorMessage: error.localizedDescription)
+        print("Add Error \(error.localizedDescription)")
+      }
+ 
+    })
+
   }
-    
+  
   
 }

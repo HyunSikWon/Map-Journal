@@ -20,7 +20,8 @@ protocol MemoRepository {
 
   private var storageService: StorageService!
   var locations: [Location] = []
-  
+    
+
   init(_ storageService: StorageService) {
     self.storageService = storageService
   }
@@ -42,6 +43,7 @@ protocol MemoRepository {
   
   func add(_ coordinate: CLLocationCoordinate2D, _ newMemo: Memo, _ completion: @escaping (Result<Void, Error>) -> Void) {
     
+    // TODO: Logic 함수로 따로 빼기
     var flag = false
     for i in 0..<locations.count {
       if locations[i].latitude == coordinate.latitude ||
@@ -53,8 +55,8 @@ protocol MemoRepository {
     }
     
     if flag == false {
-      let newLocation = Location(location: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
-      newLocation.memos.append(newMemo)
+      let newLocation = Location(location: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), memo: newMemo)
+      self.locations.append(newLocation)
     }
     
     storageService.save(locations) { result in
