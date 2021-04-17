@@ -13,12 +13,12 @@ class MemoListCell: UITableViewCell {
   
   static let reuseIdentifier = String(describing: MemoListCell.self)
   
-  private var title = UILabel()
-  private var dateLabel = UILabel()
-  private var emojiContainer = UIStackView()
-  private var feeling = UILabel()
-  private var weather = UILabel()
-  private var memo = UILabel()
+  private let title = UILabel()
+  private let dateLabel = UILabel()
+  private let emojiContainer = UIStackView()
+  private let feeling = UILabel()
+  private let weather = UILabel()
+  private let memo = UILabel()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -99,12 +99,12 @@ class MemoListCell: UITableViewCell {
   
   }
   
-  func update(_ items: MemoViewItems) {
-    self.title.text = items.title
-    self.dateLabel.text = items.date
-    self.feeling.text = items.feeling
-    self.weather.text = items.weather
-    self.memo.text = items.memo
+  func update(_ viewData: MemoViewData) {
+    self.title.text = viewData.title
+    self.dateLabel.text = viewData.date
+    self.feeling.text = viewData.feeling
+    self.weather.text = viewData.weather
+    self.memo.text = viewData.memo
   }
   
 }

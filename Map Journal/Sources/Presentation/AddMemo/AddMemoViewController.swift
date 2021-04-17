@@ -15,13 +15,13 @@ import Then
  1. 키보드 화면 가리는 문제.
  */
 
-protocol AddLocationViewPresenter {
-  func addButtonDidTap(_ location: CLLocationCoordinate2D, _ memo: MemoViewItems)
+protocol AddMemoViewPresenter {
+  func addButtonDidTap(_ location: CLLocationCoordinate2D, _ items: MemoViewData)
 }
 
-class AddLocationViewController: UIViewController, AddMemoView {
+class AddMemoViewController: UIViewController, AddMemoView {
   
-  var presenter: AddLocationViewController!
+  var presenter: AddMemoViewPresenter!
   
   private let currentLocation: CLLocationCoordinate2D
   private let mapView: MKMapView = MKMapView()
@@ -178,8 +178,7 @@ class AddLocationViewController: UIViewController, AddMemoView {
   private func addButtonDidTap() {
     // Presenter.add
     // data
-    presenter.addButtonDidTap()
-    print(currentLocation)
+    presenter.addButtonDidTap(currentLocation, MemoViewData(title: "", date: "", feeling: "", weather: "", memo: ""))
   }
   
   // MARK: - Presenter - > View
@@ -188,7 +187,7 @@ class AddLocationViewController: UIViewController, AddMemoView {
   }
   
   func dismiss() {
-    self.dismiss()
+    self.dismiss(animated: true, completion: nil)
   }
   
   @objc
@@ -208,7 +207,7 @@ class AddLocationViewController: UIViewController, AddMemoView {
   }
 }
 
-extension AddLocationViewController: UITextViewDelegate {
+extension AddMemoViewController: UITextViewDelegate {
   func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
     guard let str = textView.text else { return true }
     let newLength = str.count + text.count - range.length

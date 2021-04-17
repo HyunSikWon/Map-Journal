@@ -13,15 +13,17 @@ protocol AddMemoView {
   func dismiss()
 }
 
-class DefaultAddLocationViewPresenter: AddLocationViewPresenter {
+class DefaultAddMemoiewPresenter: AddMemoViewPresenter {
 
+  // var repo: MemoRepo
   var view: AddMemoView?
   
   init(_ view: AddMemoView) {
     self.view = view
   }
   
-  func addButtonDidTap(_ location: CLLocationCoordinate2D, _ memo: MemoViewItems) {
+  func addButtonDidTap(_ location: CLLocationCoordinate2D,
+                       _ viewData: MemoViewData) {
     // TODO: Save Logic
     
     // if error

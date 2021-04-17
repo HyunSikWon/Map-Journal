@@ -48,7 +48,7 @@ class DefaultMapViewPresenter: MapViewPresenter {
   }
   
   func annotationDidTap(_ annotation: MKAnnotation) {
-    // TODO:  해당 어노테이션(위치)의 메모를 보여준다. - 비지니스 로직
+    // TODO:  fetch data from memo repo 해당 어노테이션(위치)의 메모를 보여준다. - 비지니스 로직
 //    let coordinate = annotation.coordinate
     
     // TODO: 의존성
@@ -60,7 +60,7 @@ class DefaultMapViewPresenter: MapViewPresenter {
   func addButtonDidTap(_ currentLocation: CLLocationCoordinate2D) {
     
     // TODO: 의존성
-    let addMemoViewController = UINavigationController(rootViewController: AddLocationViewController(currentLocation))
+    let addMemoViewController = UINavigationController(rootViewController: AddMemoViewController(currentLocation))
     view?.showView(addMemoViewController)
   }
   

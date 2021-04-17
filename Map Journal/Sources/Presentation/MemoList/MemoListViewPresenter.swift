@@ -8,11 +8,12 @@
 import Foundation
 
 protocol MemoListView {
-  func setMemoListViewItems(_ items: [MemoViewItems])
+  func setMemoListViewItems(_ viewData: [MemoViewData])
 }
 
 class DefaultMemoListViewPresenter: MemoListViewPresenter {
   
+  // var memoRepo
   var view: MemoListView?
   
   init(_ view: MemoListView) {
@@ -21,13 +22,13 @@ class DefaultMemoListViewPresenter: MemoListViewPresenter {
   
   // MARK: view -> presenter
   func fetchData() {
-    // TODO: FetchData from Repo
-    view?.setMemoListViewItems(dummy.map{MemoViewItems(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
+    // TODO: Fetch data from repo
+    view?.setMemoListViewItems(dummy.map{MemoViewData(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
   }
   
   func willDeleteCell(_ indexPath: IndexPath) {
-    // TODO: Save Data
-    view?.setMemoListViewItems(dummy.map{MemoViewItems(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
+    // TODO: Delelte & Save data
+    view?.setMemoListViewItems(dummy.map{MemoViewData(title: $0.title, date: $0.dateString, feeling: $0.feelingEmogi, weather: $0.weatherEmogi, memo: $0.simpleMemo)})
   }
   
   var dummy = [

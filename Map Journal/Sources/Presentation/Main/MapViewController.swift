@@ -20,7 +20,7 @@ protocol MapViewPresenter {
 
 class MapViewController: UIViewController, MapView {
   
-  static let latLongMeters: CLLocationDistance = 500
+  static let locationDistance: CLLocationDistance = 500
   
   // MARK: - View
   private var mapView = MKMapView()
@@ -88,8 +88,8 @@ class MapViewController: UIViewController, MapView {
   private func didTapCurrentLocationButton() {
     if let location = locationManager.location {
       setRegion(MKCoordinateRegion(center: location.coordinate,
-                                   latitudinalMeters: MapViewController.latLongMeters,
-                                   longitudinalMeters: MapViewController.latLongMeters))
+                                   latitudinalMeters: MapViewController.locationDistance,
+                                   longitudinalMeters: MapViewController.locationDistance))
     }
   }
   
@@ -123,18 +123,17 @@ extension MapViewController: MKMapViewDelegate {
     mapView.userTrackingMode = .follow
     if let location = locationManager.location {
       setRegion(MKCoordinateRegion(center: location.coordinate,
-                                   latitudinalMeters: MapViewController.latLongMeters,
-                                   longitudinalMeters: MapViewController.latLongMeters) )
+                                   latitudinalMeters: MapViewController.locationDistance,
+                                   longitudinalMeters: MapViewController.locationDistance) )
     }
   }
   
   func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    // View -> Presenter
     guard let annotation = view.annotation else {return}
     mapView.setRegion(MKCoordinateRegion(center: annotation.coordinate,
-                                         latitudinalMeters: MapViewController.latLongMeters,
-                                         longitudinalMeters: MapViewController.latLongMeters), animated: true)
-
+                                         latitudinalMeters: MapViewController.locationDistance,
+                                         longitudinalMeters: MapViewController.locationDistance), animated: true)
+    // view -> presenter
     presenter.annotationDidTap(annotation)
   }
 

@@ -15,19 +15,12 @@ protocol MemoListViewPresenter {
   
 }
 
-// Entity와 별개로 두었을 때 장점은?
-struct MemoViewItems {
-  let title: String
-  let date: String
-  let feeling: String
-  let weather: String
-  let memo: String
-}
 
 class MemoListViewController: UIViewController, MemoListView {
  
 
-  fileprivate var items: [MemoViewItems] = []
+  fileprivate var viewData: [MemoViewData] = []
+ 
   // presenter
   var presenter: MemoListViewPresenter!
   
@@ -66,8 +59,8 @@ class MemoListViewController: UIViewController, MemoListView {
   
   
   // Presenter -> View
-  func setMemoListViewItems(_ items: [MemoViewItems]) {
-    self.items = items
+  func setMemoListViewItems(_ viewData: [MemoViewData]) {
+    self.viewData = viewData
     tableView.reloadData()
   }
   
@@ -76,7 +69,7 @@ class MemoListViewController: UIViewController, MemoListView {
 
 extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return items.count
+    return viewData.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -84,7 +77,7 @@ extension MemoListViewController: UITableViewDataSource, UITableViewDelegate {
       return UITableViewCell()
     }
     
-    cell.update(items[indexPath.row])
+    cell.update(viewData[indexPath.row])
     
     return cell
   }
