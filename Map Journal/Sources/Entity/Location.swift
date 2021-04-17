@@ -17,9 +17,10 @@ class Location: Codable {
     return CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
   }
   
-  init(location: CLLocation) {
+  init(location: CLLocation, memo: Memo) {
     latitude = location.coordinate.latitude
     longtitude = location.coordinate.longitude
+    memos.append(memo)
   }
 }
 
