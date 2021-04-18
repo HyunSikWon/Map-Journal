@@ -16,12 +16,12 @@ protocol MemoRepository {
   //  func removeAll()
 }
 
- final class DefaultMemoRepository: MemoRepository {
-
+final class DefaultMemoRepository: MemoRepository {
+  
   private var storageService: StorageService!
   var locations: [Location] = []
-    
-
+  
+  
   init(_ storageService: StorageService) {
     self.storageService = storageService
   }
@@ -42,34 +42,36 @@ protocol MemoRepository {
   }
   
   func add(_ coordinate: CLLocationCoordinate2D, _ newMemo: Memo, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    let saveData = addLogic(coordinate, newMemo)
     
-    // TODO: Logic 함수로 따로 빼기
-    var flag = false
-    for i in 0..<locations.count {
-      if locations[i].latitude == coordinate.latitude ||
-          locations[i].longtitude == coordinate.longitude {
-        locations[i].memos.append(newMemo)
-        flag = true
-        break
-      }
-    }
-    
-    if flag == false {
-      let newLocation = Location(location: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), memo: newMemo)
-      self.locations.append(newLocation)
-    }
-    
-    storageService.save(locations) { result in
+    storageService.save(saveData) { result in
       switch result {
       case .success():
+        self.locations = saveData
         completion(.success(Void()))
       case .failure(let error):
         completion(.failure(error))
         print(error.localizedDescription)
       }
-
     }
-
+    
+  }
+  
+  private func addLogic(_ coordinate: CLLocationCoordinate2D, _ newMemo: Memo) -> [Location] {
+    var temp = self.locations
+    
+    // 메모 추가
+    for i in 0..<temp.count {
+      if temp[i].latitude == coordinate.latitude || temp[i].longtitude == coordinate.longitude {
+        temp[i].memos.append(newMemo)
+        return temp
+      }
+    }
+    
+    // 첫 메모 추가
+    let newLocation = Location(location: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), memo: newMemo)
+    temp.append(newLocation)
+    return temp
   }
   
   
